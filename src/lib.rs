@@ -24,6 +24,7 @@ pub struct JsonData {
 }
 
 #[derive(Debug)]
+#[repr(C)]
 pub struct PolyidEntry {
     pub data: Vec<(u32, u32, f32, f32, f32)>
 }
@@ -339,6 +340,26 @@ impl NextWeightFile {
     /// Returns the dimensions of the weight file
     pub fn get_dimensions(&self) -> (u64, u64) {
         (self.lat_len, self.lon_len)
+    }
+
+    /// Returns a raw representation of gridpoints. 
+    pub fn get_raw_gridpoints(&self) -> Vec<(u32, u32, f32, f32, f32)> {
+        let mut ret = Vec::new();
+
+        // loop over each gridpoint
+        for region in self.polyid_gridpoints.iter() {
+            for point in region.data.iter() {
+                ret.push((
+                    point.0,
+                    point.1,
+                    point.2,
+                    point.3,
+                    point.4
+                ))
+            }
+        }
+
+        ret
     }
 }
 
