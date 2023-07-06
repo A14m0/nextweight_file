@@ -365,6 +365,11 @@ impl NextWeightFile {
             }
         }
 
+        let polyid_var = weight_netcdf.variable("polyid").unwrap();
+        for polyid in 0..polyid_var.len() {
+            json_data.add_polyid(polyid_var.string_value(polyid).unwrap());
+        };
+
 
         Ok(Self { 
             json_data, 
