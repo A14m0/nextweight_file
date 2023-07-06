@@ -41,7 +41,26 @@ impl NextWeightFile {
             let attr_value = match attr.value().unwrap() {
                 AttrValue::Str(a) => a,
                 AttrValue::Strs(a) => a[0].clone(),
-                _ => return Err(format!("Unexpected attribute type for {}", attr.name()))
+                AttrValue::Double(a) => format!("{}", a),
+                AttrValue::Doubles(a) => format!("{:?}", a),
+                AttrValue::Float(a) => format!("{}", a),
+                AttrValue::Floats(a) => format!("{:?}", a),
+                AttrValue::Int(a) => format!("{}", a),
+                AttrValue::Ints(a) => format!("{:?}", a),
+                AttrValue::Longlong(a) => format!("{}", a),
+                AttrValue::Longlongs(a) => format!("{:?}", a),
+                AttrValue::Schar(a) => format!("{}", a),
+                AttrValue::Schars(a) => format!("{:?}", a),
+                AttrValue::Short(a) => format!("{}", a),
+                AttrValue::Shorts(a) => format!("{:?}", a),
+                AttrValue::Uchar(a) => format!("{}", a),
+                AttrValue::Uchars(a) => format!("{:?}",a),
+                AttrValue::Uint(a) => format!("{}", a),
+                AttrValue::Uints(a) => format!("{:?}", a),
+                AttrValue::Ulonglong(a) => format!("{}",a),
+                AttrValue::Ulonglongs(a) => format!("{:?}", a),
+                AttrValue::Ushort(a) => format!("{}",a),
+                AttrValue::Ushorts(a) => format!("{:?}", a)
             };
             // add it to our list of global attributes
             json_data.add_global_attr(attr.name().to_string(), attr_value);
@@ -56,7 +75,26 @@ impl NextWeightFile {
                     let attr_value = match attr.value().unwrap() {
                         AttrValue::Str(a) => a,
                         AttrValue::Strs(a) => a[0].clone(),
-                        _ => return Err(format!("Unexpected attribute type for {}", attr.name()))
+                        AttrValue::Double(a) => format!("{}", a),
+                        AttrValue::Doubles(a) => format!("{:?}", a),
+                        AttrValue::Float(a) => format!("{}", a),
+                        AttrValue::Floats(a) => format!("{:?}", a),
+                        AttrValue::Int(a) => format!("{}", a),
+                        AttrValue::Ints(a) => format!("{:?}", a),
+                        AttrValue::Longlong(a) => format!("{}", a),
+                        AttrValue::Longlongs(a) => format!("{:?}", a),
+                        AttrValue::Schar(a) => format!("{}", a),
+                        AttrValue::Schars(a) => format!("{:?}", a),
+                        AttrValue::Short(a) => format!("{}", a),
+                        AttrValue::Shorts(a) => format!("{:?}", a),
+                        AttrValue::Uchar(a) => format!("{}", a),
+                        AttrValue::Uchars(a) => format!("{:?}",a),
+                        AttrValue::Uint(a) => format!("{}", a),
+                        AttrValue::Uints(a) => format!("{:?}", a),
+                        AttrValue::Ulonglong(a) => format!("{}",a),
+                        AttrValue::Ulonglongs(a) => format!("{:?}", a),
+                        AttrValue::Ushort(a) => format!("{}",a),
+                        AttrValue::Ushorts(a) => format!("{:?}", a)
                     };
                     // add it to our list of global attributes
                     json_data.add_variable_attr(&var_name, attr.name().to_string(), attr_value);
@@ -254,6 +292,87 @@ impl NextWeightFile {
             a.serialize_to_file(Some(new_path.to_str().unwrap().to_string()))?;
             Ok(a)
         }
+    }
+
+    /// Returns a dummy weight file
+    pub fn dummy(input_file: &PathBuf) -> Result<Self, String> {
+        let weight_netcdf = netcdf::open(input_file).unwrap();
+        let mut json_data = JsonData::new();
+
+
+        for attr in weight_netcdf.attributes() {
+            let attr_value = match attr.value().unwrap() {
+                AttrValue::Str(a) => a,
+                AttrValue::Strs(a) => a[0].clone(),
+                AttrValue::Double(a) => format!("{}", a),
+                AttrValue::Doubles(a) => format!("{:?}", a),
+                AttrValue::Float(a) => format!("{}", a),
+                AttrValue::Floats(a) => format!("{:?}", a),
+                AttrValue::Int(a) => format!("{}", a),
+                AttrValue::Ints(a) => format!("{:?}", a),
+                AttrValue::Longlong(a) => format!("{}", a),
+                AttrValue::Longlongs(a) => format!("{:?}", a),
+                AttrValue::Schar(a) => format!("{}", a),
+                AttrValue::Schars(a) => format!("{:?}", a),
+                AttrValue::Short(a) => format!("{}", a),
+                AttrValue::Shorts(a) => format!("{:?}", a),
+                AttrValue::Uchar(a) => format!("{}", a),
+                AttrValue::Uchars(a) => format!("{:?}",a),
+                AttrValue::Uint(a) => format!("{}", a),
+                AttrValue::Uints(a) => format!("{:?}", a),
+                AttrValue::Ulonglong(a) => format!("{}",a),
+                AttrValue::Ulonglongs(a) => format!("{:?}", a),
+                AttrValue::Ushort(a) => format!("{}",a),
+                AttrValue::Ushorts(a) => format!("{:?}", a)
+            };
+            // add it to our list of global attributes
+            json_data.add_global_attr(attr.name().to_string(), attr_value);
+        }
+
+        // ... and add all of the variable attributes ...
+        for var in weight_netcdf.variables() {
+            let var_name = var.name();
+            json_data.add_variable(&var_name);
+            for attr in var.attributes() {
+                if attr.name() != "_FillValue" {
+                    let attr_value = match attr.value().unwrap() {
+                        AttrValue::Str(a) => a,
+                        AttrValue::Strs(a) => a[0].clone(),
+                        AttrValue::Double(a) => format!("{}", a),
+                        AttrValue::Doubles(a) => format!("{:?}", a),
+                        AttrValue::Float(a) => format!("{}", a),
+                        AttrValue::Floats(a) => format!("{:?}", a),
+                        AttrValue::Int(a) => format!("{}", a),
+                        AttrValue::Ints(a) => format!("{:?}", a),
+                        AttrValue::Longlong(a) => format!("{}", a),
+                        AttrValue::Longlongs(a) => format!("{:?}", a),
+                        AttrValue::Schar(a) => format!("{}", a),
+                        AttrValue::Schars(a) => format!("{:?}", a),
+                        AttrValue::Short(a) => format!("{}", a),
+                        AttrValue::Shorts(a) => format!("{:?}", a),
+                        AttrValue::Uchar(a) => format!("{}", a),
+                        AttrValue::Uchars(a) => format!("{:?}",a),
+                        AttrValue::Uint(a) => format!("{}", a),
+                        AttrValue::Uints(a) => format!("{:?}", a),
+                        AttrValue::Ulonglong(a) => format!("{}",a),
+                        AttrValue::Ulonglongs(a) => format!("{:?}", a),
+                        AttrValue::Ushort(a) => format!("{}",a),
+                        AttrValue::Ushorts(a) => format!("{:?}", a)
+                    };
+                    // add it to our list of global attributes
+                    json_data.add_variable_attr(&var_name, attr.name().to_string(), attr_value);
+                }
+            }
+        }
+
+
+        Ok(Self { 
+            json_data, 
+            lat_len: 0, 
+            lon_len: 0, 
+            polyid_gridpoints: Vec::new(), 
+            lookup_table: Vec::new() 
+        })
     }
 
     /// serializes the new weight file to disk
