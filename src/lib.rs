@@ -5,7 +5,7 @@ use std::{path::PathBuf, io::Write, mem::size_of, io::Read};
 
 use std::collections::HashMap;
 
-use netcdf::AttrValue;
+use netcdf::AttributeValue;
 
 #[derive(Debug)]
 pub struct NextWeightFile {
@@ -39,28 +39,28 @@ impl NextWeightFile {
         // now we get all of the attributes...
         for attr in weight_netcdf.attributes() {
             let attr_value = match attr.value().unwrap() {
-                AttrValue::Str(a) => a,
-                AttrValue::Strs(a) => a[0].clone(),
-                AttrValue::Double(a) => format!("{}", a),
-                AttrValue::Doubles(a) => format!("{:?}", a),
-                AttrValue::Float(a) => format!("{}", a),
-                AttrValue::Floats(a) => format!("{:?}", a),
-                AttrValue::Int(a) => format!("{}", a),
-                AttrValue::Ints(a) => format!("{:?}", a),
-                AttrValue::Longlong(a) => format!("{}", a),
-                AttrValue::Longlongs(a) => format!("{:?}", a),
-                AttrValue::Schar(a) => format!("{}", a),
-                AttrValue::Schars(a) => format!("{:?}", a),
-                AttrValue::Short(a) => format!("{}", a),
-                AttrValue::Shorts(a) => format!("{:?}", a),
-                AttrValue::Uchar(a) => format!("{}", a),
-                AttrValue::Uchars(a) => format!("{:?}",a),
-                AttrValue::Uint(a) => format!("{}", a),
-                AttrValue::Uints(a) => format!("{:?}", a),
-                AttrValue::Ulonglong(a) => format!("{}",a),
-                AttrValue::Ulonglongs(a) => format!("{:?}", a),
-                AttrValue::Ushort(a) => format!("{}",a),
-                AttrValue::Ushorts(a) => format!("{:?}", a)
+                AttributeValue::Str(a) => a,
+                AttributeValue::Strs(a) => a[0].clone(),
+                AttributeValue::Double(a) => format!("{}", a),
+                AttributeValue::Doubles(a) => format!("{:?}", a),
+                AttributeValue::Float(a) => format!("{}", a),
+                AttributeValue::Floats(a) => format!("{:?}", a),
+                AttributeValue::Int(a) => format!("{}", a),
+                AttributeValue::Ints(a) => format!("{:?}", a),
+                AttributeValue::Longlong(a) => format!("{}", a),
+                AttributeValue::Longlongs(a) => format!("{:?}", a),
+                AttributeValue::Schar(a) => format!("{}", a),
+                AttributeValue::Schars(a) => format!("{:?}", a),
+                AttributeValue::Short(a) => format!("{}", a),
+                AttributeValue::Shorts(a) => format!("{:?}", a),
+                AttributeValue::Uchar(a) => format!("{}", a),
+                AttributeValue::Uchars(a) => format!("{:?}",a),
+                AttributeValue::Uint(a) => format!("{}", a),
+                AttributeValue::Uints(a) => format!("{:?}", a),
+                AttributeValue::Ulonglong(a) => format!("{}",a),
+                AttributeValue::Ulonglongs(a) => format!("{:?}", a),
+                AttributeValue::Ushort(a) => format!("{}",a),
+                AttributeValue::Ushorts(a) => format!("{:?}", a)
             };
             // add it to our list of global attributes
             json_data.add_global_attr(attr.name().to_string(), attr_value);
@@ -73,28 +73,28 @@ impl NextWeightFile {
             for attr in var.attributes() {
                 if attr.name() != "_FillValue" {
                     let attr_value = match attr.value().unwrap() {
-                        AttrValue::Str(a) => a,
-                        AttrValue::Strs(a) => a[0].clone(),
-                        AttrValue::Double(a) => format!("{}", a),
-                        AttrValue::Doubles(a) => format!("{:?}", a),
-                        AttrValue::Float(a) => format!("{}", a),
-                        AttrValue::Floats(a) => format!("{:?}", a),
-                        AttrValue::Int(a) => format!("{}", a),
-                        AttrValue::Ints(a) => format!("{:?}", a),
-                        AttrValue::Longlong(a) => format!("{}", a),
-                        AttrValue::Longlongs(a) => format!("{:?}", a),
-                        AttrValue::Schar(a) => format!("{}", a),
-                        AttrValue::Schars(a) => format!("{:?}", a),
-                        AttrValue::Short(a) => format!("{}", a),
-                        AttrValue::Shorts(a) => format!("{:?}", a),
-                        AttrValue::Uchar(a) => format!("{}", a),
-                        AttrValue::Uchars(a) => format!("{:?}",a),
-                        AttrValue::Uint(a) => format!("{}", a),
-                        AttrValue::Uints(a) => format!("{:?}", a),
-                        AttrValue::Ulonglong(a) => format!("{}",a),
-                        AttrValue::Ulonglongs(a) => format!("{:?}", a),
-                        AttrValue::Ushort(a) => format!("{}",a),
-                        AttrValue::Ushorts(a) => format!("{:?}", a)
+                        AttributeValue::Str(a) => a,
+                        AttributeValue::Strs(a) => a[0].clone(),
+                        AttributeValue::Double(a) => format!("{}", a),
+                        AttributeValue::Doubles(a) => format!("{:?}", a),
+                        AttributeValue::Float(a) => format!("{}", a),
+                        AttributeValue::Floats(a) => format!("{:?}", a),
+                        AttributeValue::Int(a) => format!("{}", a),
+                        AttributeValue::Ints(a) => format!("{:?}", a),
+                        AttributeValue::Longlong(a) => format!("{}", a),
+                        AttributeValue::Longlongs(a) => format!("{:?}", a),
+                        AttributeValue::Schar(a) => format!("{}", a),
+                        AttributeValue::Schars(a) => format!("{:?}", a),
+                        AttributeValue::Short(a) => format!("{}", a),
+                        AttributeValue::Shorts(a) => format!("{:?}", a),
+                        AttributeValue::Uchar(a) => format!("{}", a),
+                        AttributeValue::Uchars(a) => format!("{:?}",a),
+                        AttributeValue::Uint(a) => format!("{}", a),
+                        AttributeValue::Uints(a) => format!("{:?}", a),
+                        AttributeValue::Ulonglong(a) => format!("{}",a),
+                        AttributeValue::Ulonglongs(a) => format!("{:?}", a),
+                        AttributeValue::Ushort(a) => format!("{}",a),
+                        AttributeValue::Ushorts(a) => format!("{:?}", a)
                     };
                     // add it to our list of global attributes
                     json_data.add_variable_attr(&var_name, attr.name().to_string(), attr_value);
@@ -106,15 +106,15 @@ impl NextWeightFile {
         // looking at data. First things first, lets store those polyids
         let polyid_var = weight_netcdf.variable("polyid").unwrap();
         for polyid in 0..polyid_var.len() {
-            json_data.add_polyid(polyid_var.string_value(polyid).unwrap());
+            json_data.add_polyid(polyid_var.get_string(polyid).unwrap());
         };
 
         // next lets start processing those weights
         let regridweights = weight_netcdf.variable("regridweights").unwrap();
         let latvar = weight_netcdf.variable("lat").unwrap();
         let lonvar = weight_netcdf.variable("lon").unwrap();
-        let lat_vals = latvar.values::<f32,_>(..).unwrap();
-        let lon_vals = lonvar.values::<f32,_>(..).unwrap();
+        let lat_vals = latvar.get_values::<f32,_>(..).unwrap();
+        let lon_vals = lonvar.get_values::<f32,_>(..).unwrap();
         let lat_len = weight_netcdf.dimension("lat").unwrap().len() as u64;
         let lon_len = weight_netcdf.dimension("lon").unwrap().len() as u64;
         let fill = regridweights.fill_value::<f32>().unwrap().unwrap();
@@ -124,7 +124,7 @@ impl NextWeightFile {
         for polyid in 0..polyid_var.len() {
             // ... create a new entry into our lookup vector...
             let mut curr_polyid = PolyidEntry::new();
-            let data = regridweights.values_arr::<f32,_>((polyid,..,..)).unwrap();
+            let data = regridweights.get::<f32,_>((polyid,..,..)).unwrap();
             let dat_slice = data.as_slice().unwrap();
             // ... for every data value...
             for lat_idx in 0..lat_len as usize {
@@ -302,28 +302,28 @@ impl NextWeightFile {
 
         for attr in weight_netcdf.attributes() {
             let attr_value = match attr.value().unwrap() {
-                AttrValue::Str(a) => a,
-                AttrValue::Strs(a) => a[0].clone(),
-                AttrValue::Double(a) => format!("{}", a),
-                AttrValue::Doubles(a) => format!("{:?}", a),
-                AttrValue::Float(a) => format!("{}", a),
-                AttrValue::Floats(a) => format!("{:?}", a),
-                AttrValue::Int(a) => format!("{}", a),
-                AttrValue::Ints(a) => format!("{:?}", a),
-                AttrValue::Longlong(a) => format!("{}", a),
-                AttrValue::Longlongs(a) => format!("{:?}", a),
-                AttrValue::Schar(a) => format!("{}", a),
-                AttrValue::Schars(a) => format!("{:?}", a),
-                AttrValue::Short(a) => format!("{}", a),
-                AttrValue::Shorts(a) => format!("{:?}", a),
-                AttrValue::Uchar(a) => format!("{}", a),
-                AttrValue::Uchars(a) => format!("{:?}",a),
-                AttrValue::Uint(a) => format!("{}", a),
-                AttrValue::Uints(a) => format!("{:?}", a),
-                AttrValue::Ulonglong(a) => format!("{}",a),
-                AttrValue::Ulonglongs(a) => format!("{:?}", a),
-                AttrValue::Ushort(a) => format!("{}",a),
-                AttrValue::Ushorts(a) => format!("{:?}", a)
+                AttributeValue::Str(a) => a,
+                AttributeValue::Strs(a) => a[0].clone(),
+                AttributeValue::Double(a) => format!("{}", a),
+                AttributeValue::Doubles(a) => format!("{:?}", a),
+                AttributeValue::Float(a) => format!("{}", a),
+                AttributeValue::Floats(a) => format!("{:?}", a),
+                AttributeValue::Int(a) => format!("{}", a),
+                AttributeValue::Ints(a) => format!("{:?}", a),
+                AttributeValue::Longlong(a) => format!("{}", a),
+                AttributeValue::Longlongs(a) => format!("{:?}", a),
+                AttributeValue::Schar(a) => format!("{}", a),
+                AttributeValue::Schars(a) => format!("{:?}", a),
+                AttributeValue::Short(a) => format!("{}", a),
+                AttributeValue::Shorts(a) => format!("{:?}", a),
+                AttributeValue::Uchar(a) => format!("{}", a),
+                AttributeValue::Uchars(a) => format!("{:?}",a),
+                AttributeValue::Uint(a) => format!("{}", a),
+                AttributeValue::Uints(a) => format!("{:?}", a),
+                AttributeValue::Ulonglong(a) => format!("{}",a),
+                AttributeValue::Ulonglongs(a) => format!("{:?}", a),
+                AttributeValue::Ushort(a) => format!("{}",a),
+                AttributeValue::Ushorts(a) => format!("{:?}", a)
             };
             // add it to our list of global attributes
             json_data.add_global_attr(attr.name().to_string(), attr_value);
@@ -336,28 +336,28 @@ impl NextWeightFile {
             for attr in var.attributes() {
                 if attr.name() != "_FillValue" {
                     let attr_value = match attr.value().unwrap() {
-                        AttrValue::Str(a) => a,
-                        AttrValue::Strs(a) => a[0].clone(),
-                        AttrValue::Double(a) => format!("{}", a),
-                        AttrValue::Doubles(a) => format!("{:?}", a),
-                        AttrValue::Float(a) => format!("{}", a),
-                        AttrValue::Floats(a) => format!("{:?}", a),
-                        AttrValue::Int(a) => format!("{}", a),
-                        AttrValue::Ints(a) => format!("{:?}", a),
-                        AttrValue::Longlong(a) => format!("{}", a),
-                        AttrValue::Longlongs(a) => format!("{:?}", a),
-                        AttrValue::Schar(a) => format!("{}", a),
-                        AttrValue::Schars(a) => format!("{:?}", a),
-                        AttrValue::Short(a) => format!("{}", a),
-                        AttrValue::Shorts(a) => format!("{:?}", a),
-                        AttrValue::Uchar(a) => format!("{}", a),
-                        AttrValue::Uchars(a) => format!("{:?}",a),
-                        AttrValue::Uint(a) => format!("{}", a),
-                        AttrValue::Uints(a) => format!("{:?}", a),
-                        AttrValue::Ulonglong(a) => format!("{}",a),
-                        AttrValue::Ulonglongs(a) => format!("{:?}", a),
-                        AttrValue::Ushort(a) => format!("{}",a),
-                        AttrValue::Ushorts(a) => format!("{:?}", a)
+                        AttributeValue::Str(a) => a,
+                        AttributeValue::Strs(a) => a[0].clone(),
+                        AttributeValue::Double(a) => format!("{}", a),
+                        AttributeValue::Doubles(a) => format!("{:?}", a),
+                        AttributeValue::Float(a) => format!("{}", a),
+                        AttributeValue::Floats(a) => format!("{:?}", a),
+                        AttributeValue::Int(a) => format!("{}", a),
+                        AttributeValue::Ints(a) => format!("{:?}", a),
+                        AttributeValue::Longlong(a) => format!("{}", a),
+                        AttributeValue::Longlongs(a) => format!("{:?}", a),
+                        AttributeValue::Schar(a) => format!("{}", a),
+                        AttributeValue::Schars(a) => format!("{:?}", a),
+                        AttributeValue::Short(a) => format!("{}", a),
+                        AttributeValue::Shorts(a) => format!("{:?}", a),
+                        AttributeValue::Uchar(a) => format!("{}", a),
+                        AttributeValue::Uchars(a) => format!("{:?}",a),
+                        AttributeValue::Uint(a) => format!("{}", a),
+                        AttributeValue::Uints(a) => format!("{:?}", a),
+                        AttributeValue::Ulonglong(a) => format!("{}",a),
+                        AttributeValue::Ulonglongs(a) => format!("{:?}", a),
+                        AttributeValue::Ushort(a) => format!("{}",a),
+                        AttributeValue::Ushorts(a) => format!("{:?}", a)
                     };
                     // add it to our list of global attributes
                     json_data.add_variable_attr(&var_name, attr.name().to_string(), attr_value);
@@ -367,7 +367,7 @@ impl NextWeightFile {
 
         let polyid_var = weight_netcdf.variable("polyid").unwrap();
         for polyid in 0..polyid_var.len() {
-            json_data.add_polyid(polyid_var.string_value(polyid).unwrap());
+            json_data.add_polyid(polyid_var.get_string(polyid).unwrap());
         };
 
 
