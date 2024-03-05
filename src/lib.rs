@@ -1,3 +1,4 @@
+use std::path::Path;
 use std::str::FromStr;
 use std::{path::PathBuf, io::Write, mem::size_of, io::Read};
 
@@ -31,7 +32,7 @@ pub struct PolyidEntry {
 
 impl NextWeightFile {
     /// opens a NetCDF weight file and converts it to
-    pub fn from_weight_file(path: PathBuf) -> Result<Self, String> {
+    pub fn from_weight_file(path: impl AsRef<Path> + Clone) -> Result<Self, String> {
         // open the weight file
         let weight_netcdf = netcdf::open(path).unwrap();
         let mut json_data = JsonData::new();
@@ -162,7 +163,7 @@ impl NextWeightFile {
     }
 
     /// create new structure from .NWT file
-    pub fn from_nwt(path: PathBuf) -> Result<Self, String> {
+    pub fn from_nwt(path: impl AsRef<Path> + Clone) -> Result<Self, String> {
         // open the file
         let mut input_file = std::fs::File::open(path).unwrap();
         let mut data: Vec<u8> = Vec::new();
@@ -272,7 +273,7 @@ impl NextWeightFile {
 
     /// Generically opens a weight file. If it is a NetCDF file, it is converted 
     /// to the NWT format. Otherwise it is opened as standard
-    pub fn open(path: PathBuf) -> Result<Self, String> {
+    pub fn open(path: impl AsRef<Path> + Clone) -> Result<Self, String> {
         let mut data = [0u8; 4];
         // scope brackets here to make sure `input_file` is closed before opening
         {
@@ -285,7 +286,7 @@ impl NextWeightFile {
             Self::from_nwt(path)
         } else {
             let t_path = path.clone();
-            let name = t_path.to_str().unwrap();
+            let name = t_path.as_ref().to_str().unwrap();
             let a = Self::from_weight_file(path)?;
             let new_path = PathBuf::from_str(&format!("{}.nwt", name)[..]).unwrap();
             println!("[libNextWeightFile] Serializing new weight file to {}. Use this next time to avoid precomputation step", new_path.display());
@@ -295,7 +296,7 @@ impl NextWeightFile {
     }
 
     /// Returns a dummy weight file
-    pub fn dummy(input_file: &PathBuf) -> Result<Self, String> {
+    pub fn dummy(input_file: impl AsRef<Path> + Clone) -> Result<Self, String> {
         let weight_netcdf = netcdf::open(input_file).unwrap();
         let mut json_data = JsonData::new();
 
