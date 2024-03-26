@@ -27,6 +27,7 @@ pub struct JsonData {
 #[derive(Debug)]
 #[repr(C)]
 pub struct PolyidEntry {
+    // lat_idx, lon_idx, lat_val, lon_val, data_value
     pub data: Vec<(u32, u32, f32, f32, f32)>
 }
 
