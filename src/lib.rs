@@ -571,12 +571,11 @@ impl PolyidEntry {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use std::str::FromStr;
 
     #[test]
     fn it_works() {
         // lets test this
-        let test_path = PathBuf::from_str("test_cases/cckp_aggregation_1x1").unwrap();
+        let test_path = PathBuf::from_str("../rust_science/test_cases/wgts/cckp_aggregation_1x1").unwrap();
         let new_path = PathBuf::from_str("test.nwt").unwrap();
         let new_weight = NextWeightFile::from_weight_file(test_path).unwrap();
         println!("new_weight file weight examples: {:?}", &new_weight.lookup_table[..10]);
