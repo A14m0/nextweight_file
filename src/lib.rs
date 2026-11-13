@@ -16,7 +16,7 @@
 //! data   | (u32 lat_idx, u32 lon_idx, f32 lat, f32 lon, f32 weight) per point
 //! ```
 
-use std::collections::HashMap;
+use std::collections::BTreeMap;
 use std::fs::File;
 use std::io::{BufReader, BufWriter, Read, Seek, SeekFrom, Write};
 use std::mem::size_of;
@@ -51,7 +51,9 @@ pub struct NextWeightFile {
 #[derive(serde::Serialize, serde::Deserialize, Debug)]
 pub struct JsonData {
     global_attrs: Vec<(String, String)>,
-    per_variable_attrs: HashMap<String, Vec<(String, String)>>,
+    // a BTreeMap (not a HashMap) so the serialized header, and with it the
+    // whole .nwt file, is byte-for-byte reproducible between runs
+    per_variable_attrs: BTreeMap<String, Vec<(String, String)>>,
     polyids: Vec<String>
 }
 
@@ -627,7 +629,7 @@ impl JsonData {
     pub fn new() -> Self {
         Self {
             global_attrs: Vec::new(),
-            per_variable_attrs: HashMap::new(),
+            per_variable_attrs: BTreeMap::new(),
             polyids: Vec::new()
         }
     }
@@ -1025,6 +1027,21 @@ mod tests {
         }
 
         NextWeightFile::from_parts(json_data, 180, 360, entries).unwrap()
+    }
+
+    #[test]
+    fn json_header_is_independent_of_insertion_order() {
+        let vars = ["regridweights", "lat", "lon", "lat_bnds", "lon_bnds", "polyid", "bnds"];
+
+        let build = |order: &mut dyn Iterator<Item = &&str>| {
+            let mut json_data = JsonData::new();
+            for var in order {
+                json_data.add_variable_attr(var, "long_name".to_string(), var.to_string());
+            }
+            serde_json::to_string(&json_data).unwrap()
+        };
+
+        assert_eq!(build(&mut vars.iter()), build(&mut vars.iter().rev()));
     }
 
     #[test]
