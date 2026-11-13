@@ -249,20 +249,19 @@ impl NextWeightFile {
     }
 
     /// Returns a raw representation of gridpoints.
+    ///
+    /// This is a copy of every gridpoint in the file, so it costs as much
+    /// again as the file itself. Walking [`Self::get_gridpoints`] alongside
+    /// [`Self::get_lookup_table`] reaches the same points without one
     pub fn get_raw_gridpoints(&self) -> Vec<GridPoint> {
-        let mut ret = Vec::new();
+        // the whole size is known up front, and growing a vector this large by
+        // halves would hold both the old and the new allocation each time
+        let total = self.polyid_gridpoints.iter().map(|r| r.data.len()).sum();
+        let mut ret = Vec::with_capacity(total);
 
         // loop over each gridpoint
         for region in self.polyid_gridpoints.iter() {
-            for point in region.data.iter() {
-                ret.push((
-                    point.0,
-                    point.1,
-                    point.2,
-                    point.3,
-                    point.4
-                ))
-            }
+            ret.extend_from_slice(&region.data);
         }
 
         ret
@@ -1123,6 +1122,25 @@ mod tests {
         );
 
         std::fs::remove_file(out_path).unwrap();
+    }
+
+    #[test]
+    fn raw_gridpoints_are_gathered_in_one_allocation() {
+        let built = sample(&[
+            ("AAA", vec![(0, 1, -89.5, -179.5, 0.25), (1, 2, -88.5, -178.5, 0.75)]),
+            ("BBB", vec![]),
+            ("CCC", vec![(3, 4, -86.5, -176.5, 1.0)])
+        ]);
+
+        let raw = built.get_raw_gridpoints();
+        assert_eq!(raw, vec![
+            (0, 1, -89.5, -179.5, 0.25),
+            (1, 2, -88.5, -178.5, 0.75),
+            (3, 4, -86.5, -176.5, 1.0)
+        ]);
+
+        // the copy is expensive enough without the vector growing into it
+        assert_eq!(raw.capacity(), raw.len());
     }
 
     #[test]
